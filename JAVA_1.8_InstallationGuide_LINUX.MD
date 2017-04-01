@@ -14,21 +14,27 @@ For global access (for all users) install it preferably in the directory /opt/ja
 3. Once downloaded:
 
  `tar -zxvf jdk-8u45-linux-i586.tar.gz		[For 32-bit Systems]`
+ 
  `tar -zxvf jdk-8u45-linux-x64.tar.gz		[For 64-bit Systems]`
 
 4. Next, move to the extracted directory and use command update-alternatives to tell system where java and its executables are installed.
 
- `update-alternatives --install /usr/bin/java java /opt/java/jdk1.8.0_45/bin/java 100  
+ `update-alternatives --install /usr/bin/java java /opt/java/jdk1.8.0_45/bin/java 100 
+ 
  update-alternatives --config java`
-<br>
+
 `update-alternatives --install /usr/bin/javac javac /opt/java/jdk1.8.0_45/bin/javac 100
+
 update-alternatives --config javac`
-<br>
+
 `update-alternatives --install /usr/bin/jar jar /opt/java/jdk1.8.0_45/bin/jar 100
+
 update-alternatives --config jar`
 
 5. Setting up Java Environment Variables.
 
-`export JAVA_HOME=/opt/java/jdk1.8.0_45/	<br>
-export JRE_HOME=/opt/java/jdk1.8.0._45/jre 	<br>
+`export JAVA_HOME=/opt/java/jdk1.8.0_45/	
+
+export JRE_HOME=/opt/java/jdk1.8.0._45/jre 	
+
 export PATH=$PATH:/opt/java/jdk1.8.0_45/bin:/opt/java/jdk1.8.0_45/jre/bin`
