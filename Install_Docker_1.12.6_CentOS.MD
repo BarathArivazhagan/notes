@@ -15,7 +15,10 @@ install :
 
 STEP 3: sudo yum install /path/to/rpm
 
- ``` sudo yum install docker-engine-1.12.6-1.el7.centos.x86_64.rpm docker-engine-selinux-1.12.6-1.el7.centos.noarch.rpm ```
+ ``` 
+ sudo yum install docker-engine-1.12.6-1.el7.centos.x86_64.rpm docker-engine-selinux-1.12.6-1.el7.centos.noarch.rpm 
+ 
+ ```
 
 
 STEP 4: Start the docker 
