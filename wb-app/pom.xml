@@ -1,1 +1,91 @@
-hello
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.accenture.aris</groupId>
+		<artifactId>aris-web-platform</artifactId>
+		<version>1.1-RC-SNAPSHOT</version>  
+	</parent>
+
+	<groupId>com.accenture.aris.base.ebiz</groupId>
+	<artifactId>ebiz-base-web-app</artifactId>
+	
+	<name>ebiz-base-web-app</name>
+	<description>
+            Application ebiz - Spring Boot Java Backend for ARIS Web Application (Core)
+        </description>
+	<scm>
+	     <url>ssh://git@newsource.accenture.com/a3190/ebiz-base-web-app.git</url>
+	</scm>
+	<packaging>war</packaging>
+
+	<properties>
+        <java.version>1.8</java.version>
+        <skipTests>true</skipTests>
+
+        <!-- jacoco start -->
+        <!-- Do not run tests by default, for easy deployment -->
+        <skip.integration.tests>true</skip.integration.tests>
+        <skip.unit.tests>true</skip.unit.tests>
+        <!-- jacoco end -->
+
+	</properties>
+
+	<dependencies>
+        <dependency>
+            <groupId>com.accenture.aris</groupId>
+            <artifactId>aris-web-core-app</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.accenture.aris</groupId>
+            <artifactId>aris-web-core-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-core</artifactId>
+    <version>2.7.5</version>
+</dependency>
+
+        <dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+	</dependencies>
+    <build>
+      <finalName>ebiz-base-web-app</finalName>
+      <plugins>
+         <plugin>
+    <artifactId>maven-resources-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>copy-appCtx</id>
+            <phase>generate-resources</phase>
+            <goals>
+                <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+                <outputDirectory>${basedir}/src/main/webapp/</outputDirectory>
+                <overwrite>true</overwrite>
+                <resources>
+                    <resource>
+                        <directory>../ebiz-core-ui-build/</directory>
+                        <!-- <excludes>
+                            <exclude>${project.build.directory}/src/</exclude>
+                        
+                        </excludes> -->
+                    </resource>
+                </resources>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+      	<plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+      </plugins>
+    </build>
+</project>
