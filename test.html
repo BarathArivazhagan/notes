@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>dc.js - Filtering Example</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/dc.css"/>
+    <style>
+      #table td {
+        padding-left: 10px;
+      }
+    </style>
+</head>
+<body>
+
+<div class="container">
+<script type="text/javascript" src="header.js"></script>
+  <div id="category-pie-chart" style="width:300px; height:330px">
+    <div class="reset" style="visibility: hidden;">selected: <span class="filter"></span>
+      <a href="javascript:categoryChart.filterAll();dc.redrawAll();">reset</a>
+    </div>
+  </div>
+  <div id="order-by-location-chart" style="width:300px; height:330px">
+    <div class="reset" style="visibility: hidden;">range: <span class="filter"></span>
+      <a href="javascript:locationChart.filterAll();dc.redrawAll();">reset</a>
+    </div>
+  </div>
+
+
+
+
+<script type="text/javascript" src="../js/d3.js"></script>
+<script type="text/javascript" src="../js/crossfilter.js"></script>
+<script type="text/javascript" src="../js/dc.js"></script>
+<script type="text/javascript" src="../js/FileSaver.js"></script>
+<script type="text/javascript">
+var categoryChart   = dc.pieChart("#category-pie-chart");
+var locationChart  = dc.barChart("#order-by-location-chart");
+
+
+var data = [
+    {productName: 'Mr A', orders: 100, locationName: "CHENNAI"},
+    {productName: 'Mr B', orders: 110, locationName: "CHENNAI"},
+    {productName: 'Mr C', orders: 240, locationName: "DELHI"},
+    {productName: 'Mr A', orders: 70, locationName: "MUMBAI"},
+    {productName: 'Mr B', orders: 20, locationName: "PUNE"},
+    {productName: 'Mr B', orders: 50, locationName: "CHENNAI"},
+    {productName: 'Mr C', orders: 30, locationName: "MUMBAI"}
+];
+
+
+var ndx = crossfilter(data),
+    locationDim  = ndx.dimension(function(d) {return d.locationName;}),
+    ordersDim = ndx.dimension(function(d) {return d.orders;}),
+    productnameDim  = ndx.dimension(function(d) {return d.productName;}),
+    ordersPerLocation = locationDim.group().reduceSum(function(d) {return d.orders;}),
+    ordersPerProduct = productnameDim.group().reduceSum(function(d) {return d.orders;}),
+    orderscount    = ordersDim.group().reduceCount();
+  categoryChart
+    .width(300)
+    .height(300)
+    .dimension(locationDim)
+    .group(ordersPerLocation)
+    .innerRadius(50)
+    .controlsUseVisibility(true);
+  locationChart
+    .dimension(ordersDim)
+    .group(orderscount)
+    .x(d3.scale.linear().domain([0,10]))
+    .elasticY(true)
+    .controlsUseVisibility(true);
+locationChart.xAxis().tickFormat(function(d) {return d*10}); // convert back to base unit
+locationChart.yAxis().ticks(2);
+
+var allDollars = ndx.groupAll().reduceSum(function(d) { return d.orders; });
+
+dc.renderAll();
+</script>
+
+</div>
+</body>
+</html>

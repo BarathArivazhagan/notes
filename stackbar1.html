@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>dc.js - Stacked Bar Example</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/dc.css"/>
+    <style>
+      .dc-chart g.chart-body {
+          clip-path: none;
+      }
+    </style>
+  </head>
+<body>
+
+<div class="container">
+
+    <div id="barChart"></div>
+
+    <script type="text/javascript" src="../js/d3.js"></script>
+    <script type="text/javascript" src="../js/crossfilter.js"></script>
+    <script type="text/javascript" src="../js/dc.js"></script>
+    <script type="text/javascript">
+
+      var chart = dc.barChart("#barChart");
+      var locations=[];
+      d3.csv("OrderByLocation.csv", function(error, experiments) {
+
+          experiments.forEach(function(x) {
+              x.productCount = +x.productCount;
+              if ( !locations[x.locationName]){
+                locations.push(x.locationName);
+              }
+
+          });
+
+          var ndx                 = crossfilter(experiments),
+              locationDimension        = ndx.dimension(function(d) {return d.locationName;}),
+              totalProductDimension      = ndx.dimension(function(d) {return d.productCount;});
+var chennai_filter = locationDimension.filter("CHENNAI");
+print_filter("chennai_filter");
+
+var total = locationDimension.group().reduceSum(function(d) {return d.productCount;});
+          console.log("locations "+locations);
+          print_filter("total");
+          chart
+              .width(768)
+              .height(480)
+              .x(d3.scale.linear().domain(["CHENNAI","BANGALORE"]))
+              .dimension(locationDimension)
+              .group(total)
+              .margins({left: 80, top: 20, right: 10, bottom: 20})
+              .brushOn(false)
+              .clipPadding(10)
+              .title(function(d) {
+                  return d.key + '[' + this.layer + ']: ' + d.value[this.layer];
+              });
+
+
+              function print_filter(filter){
+	var f=eval(filter);
+	if (typeof(f.length) != "undefined") {}else{}
+	if (typeof(f.top) != "undefined") {f=f.top(Infinity);}else{}
+	if (typeof(f.dimension) != "undefined") {f=f.dimension(function(d) { return "";}).top(Infinity);}else{}
+	console.log(filter+"("+f.length+") = "+JSON.stringify(f).replace("[","[\n\t").replace(/}\,/g,"},\n\t").replace("]","\n]"));
+}
+
+
+
+
+          chart.render();
+
+});
+
+    </script>
+
+</div>
+  </body>
+</html>
