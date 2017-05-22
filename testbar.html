@@ -1,0 +1,164 @@
+<head>
+  <title>dc.js - Stacked Bar Example</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../css/dc.css"/>
+  <script type="text/javascript" src="../js/d3.js"></script>
+  <script type="text/javascript" src="../js/crossfilter.js"></script>
+  <script type="text/javascript" src="../js/dc.js"></script>
+
+</head>
+<body>
+  <script>
+  data = [
+  {"date": "31-03-2015 23:05:36","channelUUID": "c1d0001", "bytesTxd": 110},
+  {"date": "31-03-2015 00:05:36","channelUUID": "c1d0001", "bytesTxd": 130},
+  {"date": "24-03-2015 00:05:36","channelUUID": "c1d0001", "bytesTxd": 150},
+  {"date": "17-05-2014 23:05:36","channelUUID": "c1d0001", "bytesTxd": 170},
+  {"date": "31-03-2015 23:55:36","channelUUID": "c1d0002", "bytesTxd": 220},
+  {"date": "01-03-2015 00:55:36","channelUUID": "c1d0002", "bytesTxd": 240},
+  {"date": "25-03-2015 00:55:36","channelUUID": "c1d0002", "bytesTxd": 260},
+  {"date": "31-03-2015 03:05:36","channelUUID": "c1d0002", "bytesTxd": 280},
+  {"date": "17-03-2015 00:55:36","channelUUID": "c1d0002", "bytesTxd": 230},
+  {"date": "31-03-2015 19:05:36","channelUUID": "c1d0003", "bytesTxd": 310},
+  {"date": "31-03-2015 23:13:36","channelUUID": "c1d0003", "bytesTxd": 330},
+  {"date": "26-03-2015 00:45:36","channelUUID": "c1d0003", "bytesTxd": 350},
+  {"date": "29-03-2015 00:15:36","channelUUID": "c1d0004", "bytesTxd": 420},
+  {"date": "28-03-2015 00:55:36","channelUUID": "c1d0004", "bytesTxd": 440},
+  {"date": "06-03-2015 00:55:36","channelUUID": "c1d0004", "bytesTxd": 460},
+  {"date": "31-03-2015 23:45:36","channelUUID": "c1d0001", "bytesTxd": 190},
+  {"date": "31-03-2015 23:25:36","channelUUID": "c1d0003", "bytesTxd": 370},
+  {"date": "31-03-2015 07:05:36","channelUUID": "c1d0005", "bytesTxd": 530},
+  {"date": "21-03-2015 00:55:36","channelUUID": "c1d0002", "bytesTxd": 250},
+  {"date": "11-03-2015 00:55:36","channelUUID": "c1d0005", "bytesTxd": 550},
+  {"date": "31-03-2015 11:05:36","channelUUID": "c1d0003", "bytesTxd": 390},
+  {"date": "17-01-2015 00:55:36","channelUUID": "c1d0005", "bytesTxd": 570},
+  {"date": "17-11-2014 00:55:36","channelUUID": "c1d0005", "bytesTxd": 590},
+  {"date": "31-03-2015 23:35:36","channelUUID": "c1d0003", "bytesTxd": 340},
+  {"date": "17-09-2014 00:55:36","channelUUID": "c1d0003", "bytesTxd": 360},
+  {"date": "28-03-2015 00:25:36","channelUUID": "c1d0002", "bytesTxd": 270},
+  {"date": "31-03-2015 15:05:36","channelUUID": "c1d0005", "bytesTxd": 510},
+  {"date": "16-03-2015 00:55:36","channelUUID": "c1d0003", "bytesTxd": 360},
+  {"date": "27-03-2015 00:35:36","channelUUID": "c1d0002", "bytesTxd": 270},
+  {"date": "17-07-2014 00:55:36","channelUUID": "c1d0005", "bytesTxd": 510}
+    ];
+
+  var cf = crossfilter(data);
+  var numFormat = d3.format(".2f");
+  var parseDate = d3.time.format("%d-%m-%Y %H:%M:%S").parse;
+  data.forEach(function(d) {
+               d.date = parseDate(d.date);
+               });
+
+  var today = new Date("2015/04/01 00:00:00");
+  var hour = new Date(today-3600000);
+  var day = new Date(today-86400000);
+  var week = new Date(today-604800000);
+  var month = new Date(today-2419200000);
+  var year = new Date(today-31536000000);
+
+  var dimByChannel = cf.dimension(function(d) { return d.channelUUID; });
+  var groupAvgChan = dimByChannel.group().reduce(
+      function reduceAdd(p, v) {
+          p.bytesTxd = p.bytesTxd + v.bytesTxd;
+          p.count = p.count + 1;
+          p.avg = p.bytesTxd / p.count;
+          p.avgTot = p.avgTot + p.avg;
+          p.avgPrcnt = (p.avg / p.avgTot) * 100;
+          if(p.max < v.bytesTxd) { p.max = v.bytesTxd; }
+          p.maxTot = p.maxTot + p.max;
+          p.maxPrcnt = (p.max / p.maxTot) * 100;
+          return p;
+      },
+      function reduceRemove(p, v) {
+          p.bytesTxd = p.bytesTxd - v.bytesTxd;
+          p.count = p.count - 1;
+          p.avg = p.bytesTxd / p.count;
+          p.avgTot = p.avgTot - p.avg;
+          p.avgPrcnt = (p.avg / p.avgTot) * 100;
+          if(p.max > v.bytesTxd) { p.max = v.bytesTxd; }
+          p.maxTot = p.maxTot - p.max;
+          p.maxPrcnt = (p.max / p.maxTot) * 100;
+          return p;
+      },
+      function reduceInitial() {
+          return {
+              bytesTxd:0, count:0, avg:0, avgTot:0,
+              avgPrcnt:0, max:0, maxTot:0,maxPrcnt:0};
+                                                 });
+  var chanUtil = dc.barChart("#chanUtil");
+  chanUtil
+  .dimension(dimByChannel)
+  .group(groupAvgChan,"Avg Utilization %")
+  .valueAccessor(function(d) { return d.value.avgPrcnt; })
+  .stack(groupAvgChan,"Max Utilization %", function(d) {
+      return d.value.maxPrcnt; })
+  .width(550)
+  .height(400)
+  .margins({top: 10, right: 0, bottom: 35, left: 40})
+  .x(d3.scale.ordinal().domain(data.map(function (d) {
+      return d.channelUUID; })))
+  .xUnits(dc.units.ordinal)
+  .title(function(d){
+      return "Channel ID: " + d.data.key + "\nAvg%: " +
+          numFormat(d.data.value.avgPrcnt) + "\nMax%: " +
+          numFormat(d.data.value.maxPrcnt); })
+  .xAxisLabel("Channel ID")
+  .yAxisLabel("Channel Utilization %")
+  .brushOn(false)
+  .elasticY(true)
+  .renderHorizontalGridLines(true)
+  .legend(dc.legend().x(400).y(5).itemHeight(15).gap(5))
+  .yAxis().tickFormat(function(v) {return v + '%';});
+
+  dc.renderAll();
+
+  function myFunc(){
+      var dimForHour = cf.dimension(function(d) { return d.date; });
+          dimForHour.filter([hour, today]);
+      /*
+      var dimByChannel = cf.dimension(function(d) { return d.channelUUID; });
+      var groupAvgChan = dimByChannel.group().reduce(
+      function reduceAdd(p, v) {
+          p.bytesTxd = p.bytesTxd + v.bytesTxd;
+          p.count = p.count + 1;
+          p.avg = p.bytesTxd / p.count;
+          p.avgTot = p.avgTot + p.avg;
+          p.avgPrcnt = (p.avg / p.avgTot) * 100;
+          if(p.max < v.bytesTxd) { p.max = v.bytesTxd; }
+          p.maxTot = p.maxTot + p.max;
+          p.maxPrcnt = (p.max / p.maxTot) * 100;
+          return p;
+      },
+      function reduceRemove(p, v) {
+          p.bytesTxd = p.bytesTxd - v.bytesTxd;
+          p.count = p.count - 1;
+          p.avg = p.bytesTxd / p.count;
+          p.avgTot = p.avgTot - v.avgTot;
+          p.avgPrcnt = (p.avg / p.avgTot) * 100;
+          if(p.max > v.bytesTxd) { p.max = v.bytesTxd; }
+          p.maxTot = p.maxTot - p.max;
+          p.maxPrcnt = (p.max / p.maxTot) * 100;
+          return p;
+      },
+      function reduceInitial() {
+          return {
+              bytesTxd:0, count:0, avg:0, avgTot:0,
+              avgPrcnt:0, max:0, maxTot:0,maxPrcnt:0};
+                                                 });
+      */
+      dc.redrawAll();
+  }
+
+
+  </script>
+<div class="pull-right btn-group btn-group-sm">
+    <button onclick="myFunc()" id="chanUtilHour">Hour</button>
+    <button class="btn btn-default" id="chanUtilDay">Day</button>
+    <button class="btn btn-default" id="chanUtilWeek">Week</button>
+    <button class="btn btn-default" id="chanUtilMonth">Month</button>
+</div>
+<div id="chanUtil">
+    <svg></svg>
+</div>
+</body>

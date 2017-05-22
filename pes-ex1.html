@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>dc.js - Stacked Bar Example</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/dc.css"/>
+
+  </head>
+<body>
+
+  <div id="piechart"></div>
+  <div id="stackbar"></div>
+
+
+    <script type="text/javascript" src="../js/d3.js"></script>
+    <script type="text/javascript" src="../js/crossfilter.js"></script>
+    <script type="text/javascript" src="../js/dc.js"></script>
+    <script type="text/javascript">
+
+
+
+
+    var pieData = [
+                { "categoryName": "ELECTRONICS", "categoryCount": 45 },
+                { "categoryName": "HOMEAPPLIANCES", "categoryCount": 34 },
+                { "categoryName": "FASHION", "categoryCount": 54 },
+                { "categoryName": "SPORTS", "categoryCount": 27 }
+
+               ];
+
+    var pieChart = dc.pieChart('#piechart');
+
+    var ndx = crossfilter(pieData);
+    var all = ndx.groupAll();
+
+
+
+    var ordersPlaced = order_by_category();
+    var coreCountGroup = coreCount.group();
+    var ndx           = crossfilter(experiments),
+        categoryDimension  = ndx.dimension(function(d) {return d.categoryName;})
+        ordersPlaced = runDimension.group().reduceSum(function(d) {return d.categoryCount;});
+
+        function order_by_category() {
+            var scoreThreshold=document.getElementById('slideRange').value;
+            scoreThreshold=parseFloat(scoreThreshold);
+            if (isNaN(scoreThreshold)) {
+                scoreThreshold=0.5
+            }
+            return ndx.dimension(function (d) {
+                var maxNumber=80;
+                if (d.scores >maxNumber*scoreThreshold) {
+                    return 'High';
+                } else {
+                    return 'Low';
+                }
+            });
+        }
+    piechart
+      .width(768)
+      .height(480)
+      .slicesCap(4)
+      .innerRadius(100)
+      .dimension(categoryDimension)
+      .group(ordersPlaced)
+      .legend(dc.legend())
+      // workaround for #703: not enough data is accessible through .label() to display percentages
+      .on('pretransition', function(chart) {
+          chart.selectAll('text.pie-slice').text(function(d) {
+              return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+          })
+      });
+
+      var data = [
+        {"locationName": "CHENNAI", "ELECTRONICS": 10, "HOMEAPPLIANCES": 10},
+        {"locationName": "BANGALORE", "ELECTRONICS": 2, "HOMEAPPLIANCES": 10},
+        {"locationName": "MUMBAI", "ELECTRONICS": 10, "HOMEAPPLIANCES": 2},
+        {"locationName": "DELHI", "ELECTRONICS": 10, "HOMEAPPLIANCES": 10},
+        {"locationName": "PUNE", "ELECTRONICS": 2, "HOMEAPPLIANCES": 2},
+        {"locationName": "BENGAL", "ELECTRONICS": 2, "HOMEAPPLIANCES": 10},
+        {"locationName": "KERALA", "ELECTRONICS": 10, "HOMEAPPLIANCES": 2}
+    ];
+
+
+
+    var stackbar = dc.barChart("#stackbar");
+    var dataset = crossfilter(data);
+
+    var locationDimension = dataset.dimension(function (d) {
+        return d.locationName;
+    });
+
+    var ordersByLocation = locationDimension.group().reduce(
+            function (p, v) {
+                p.ELECTRONICS += v.ELECTRONICS;
+                p.HOMEAPPLIANCES += v.HOMEAPPLIANCES;
+                return p;
+            },
+            function (p, v) {
+                p.ELECTRONICS -= v.ELECTRONICS;
+                p.HOMEAPPLIANCES -= v.HOMEAPPLIANCES;
+                return p;
+            },
+            function () {
+                return {
+                    ELECTRONICS: 0,
+                    HOMEAPPLIANCES: 0,
+                  };
+            }
+    );
+
+
+    stackbar
+            .margins({top: 50, right: 50, left: 50, bottom: 50})
+            .width(500)
+            .height(200)
+            .dimension(locationDimension)
+            .group(ordersByLocation, "ELECTRONICS")
+            .valueAccessor(function (d) {
+                return d.value.ELECTRONICS;
+            })
+            .stack(ordersByLocation, "HOMEAPPLIANCES", function (d) {
+                return d.value.HOMEAPPLIANCES;
+            })
+            .x(d3.scale.ordinal().domain(data.map(function (d) {
+                return d.locationName; })))
+            .xUnits(dc.units.ordinal)
+            .elasticY(true)
+            .brushOn(false)
+            .xAxisLabel("Locations ")
+            .yAxisLabel("Orders Count")
+            .legend(dc.legend().x(400).y(5).itemHeight(15).gap(5))
+            .render();
+
+
+
+
+    dc.renderAll();
+
+
+    </script>
+
+</div>
+  </body>
+</html>

@@ -44,17 +44,18 @@ var total = locationDimension.group().reduceSum(function(d) {return d.productCou
           console.log("locations "+locations);
           print_filter("total");
           chart
-              .width(768)
-              .height(480)
-              .x(d3.scale.linear().domain(["CHENNAI","BANGALORE"]))
-              .dimension(locationDimension)
-              .group(total)
-              .margins({left: 80, top: 20, right: 10, bottom: 20})
-              .brushOn(false)
-              .clipPadding(10)
-              .title(function(d) {
-                  return d.key + '[' + this.layer + ']: ' + d.value[this.layer];
-              });
+          .dimension(locationDimension)
+          .group(totalProductDimension)
+          .width(550)
+          .height(400)
+          .margins({top: 10, right: 0, bottom: 35, left: 40})
+          .x(d3.scale.ordinal().domain(locations.map(function (d) {
+              return d.locationName; })))
+          .xUnits(dc.units.ordinal)
+          .xAxisLabel("Location")
+          .yAxisLabel("Orders placed %")
+          .brushOn(false)
+          .elasticY(true);
 
 
               function print_filter(filter){
@@ -68,7 +69,7 @@ var total = locationDimension.group().reduceSum(function(d) {return d.productCou
 
 
 
-          chart.render();
+          dc.renderAll();
 
 });
 

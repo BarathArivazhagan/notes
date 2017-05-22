@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>dc.js - Stacked Bar Example</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/dc.css"/>
+    <style>
+    #chart g.stack._0  > rect.bar {
+    stroke: none;
+    fill: red;
+}
+
+#chart g.stack._1 > rect.bar {
+    stroke: none;
+    fill: yellow;
+}
+
+#chart g.stack._2 > rect.bar {
+    stroke: none;
+    fill: green;
+}
+
+#chart g.dc-legend-item:nth-child(1) > rect:nth-child(1) {
+    stroke: none;
+    fill: red;
+}
+
+#chart g.dc-legend-item:nth-child(2) > rect:nth-child(1) {
+    stroke: none;
+    fill: yellow;
+}
+
+#chart g.dc-legend-item:nth-child(3) > rect:nth-child(1) {
+    stroke: none;
+    fill: green;
+}
+    </style>
+  </head>
+<body>
+
+<div id="chart"></div>
+<script type="text/javascript" src="header.js"></script>
+    <div id="test"></div>
+
+    <script type="text/javascript" src="../js/d3.js"></script>
+    <script type="text/javascript" src="../js/crossfilter.js"></script>
+    <script type="text/javascript" src="../js/dc.js"></script>
+    <script type="text/javascript">
+
+    var data = [
+      {"locationName": "CHENNAI", "ELECTRONICS": 10, "HOMEAPPLIANCES": 10},
+      {"locationName": "BANGALORE", "ELECTRONICS": 2, "HOMEAPPLIANCES": 10},
+      {"locationName": "MUMBAI", "ELECTRONICS": 10, "HOMEAPPLIANCES": 2},
+      {"locationName": "DELHI", "ELECTRONICS": 10, "HOMEAPPLIANCES": 10},
+      {"locationName": "PUNE", "ELECTRONICS": 2, "HOMEAPPLIANCES": 2},
+      {"locationName": "BENGAL", "ELECTRONICS": 2, "HOMEAPPLIANCES": 10},
+      {"locationName": "KERALA", "ELECTRONICS": 10, "HOMEAPPLIANCES": 2}
+  ];
+
+
+
+  var chart = dc.barChart("#chart");
+  var dataset = crossfilter(data);
+
+  var locationDimension = dataset.dimension(function (d) {
+      return d.locationName;
+  });
+
+  var ordersByLocation = locationDimension.group().reduce(
+          function (p, v) {
+              p.ELECTRONICS += v.ELECTRONICS;
+              p.HOMEAPPLIANCES += v.HOMEAPPLIANCES;
+              return p;
+          },
+          function (p, v) {
+              p.ELECTRONICS -= v.ELECTRONICS;
+              p.HOMEAPPLIANCES -= v.HOMEAPPLIANCES;
+              return p;
+          },
+          function () {
+              return {
+                  ELECTRONICS: 0,
+                  HOMEAPPLIANCES: 0,
+                };
+          }
+  );
+
+
+  chart
+          .margins({top: 50, right: 50, left: 50, bottom: 50})
+          .width(500)
+          .height(200)
+          .dimension(locationDimension)
+          .group(ordersByLocation, "ELECTRONICS")
+          .valueAccessor(function (d) {
+              return d.value.ELECTRONICS;
+          })
+          .stack(ordersByLocation, "HOMEAPPLIANCES", function (d) {
+              return d.value.HOMEAPPLIANCES;
+          })
+          .x(d3.scale.ordinal().domain(data.map(function (d) {
+              return d.locationName; })))
+          .xUnits(dc.units.ordinal)
+          .elasticY(true)
+          .brushOn(false)
+          .xAxisLabel("Locations ")
+          .yAxisLabel("Orders Count")
+          .legend(dc.legend().x(400).y(5).itemHeight(15).gap(5))
+          .render();
+
+    </script>
+
+</div>
+  </body>
+</html>
