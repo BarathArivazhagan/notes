@@ -8,6 +8,11 @@ pod, skipping: failed to "StartContainer" for "POD" with ErrImagePull: "image pu
 ## Solution: 
 
 ```
+$ yum install subscription-manager
+
+```
+
+```
 $ vi /etc/kubernetes/apiserver
 //Edit the permission 
 # default admission control policies
