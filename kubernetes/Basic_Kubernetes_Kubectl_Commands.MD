@@ -22,11 +22,11 @@ Service:
 
 | command                           | description                       |
 | --------------------------------- | --------------------------------- |
-| kubectl get services              |  To get kubernetes services       |
-| kubectl get svc                   | To get kubernetes services(short form)|
+| <b>kubectl get services</b>       |  To get kubernetes services       |
+| <b>kubectl get svc</b>            | To get kubernetes services(short form)|
 
 Pod:
 
 | command                           | description                       |
 | --------------------------------- | --------------------------------- |
-| kubectl get pods                  |  To get kubernetes pods       |
+| <b>kubectl get pods</b>           |  To get kubernetes pods           |
