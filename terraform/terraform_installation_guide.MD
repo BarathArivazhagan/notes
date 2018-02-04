@@ -1,6 +1,6 @@
 # How to install terraform in linux ? 
 
-Follow below instructions to setup terraform in linux machine
+Follow below instructions to setup terraform in linux machine(AWS EC2 instance)?
 
 ```
   $ sudo yum install zip unzip # ensure unzip package installed to unzip the terraform folder
