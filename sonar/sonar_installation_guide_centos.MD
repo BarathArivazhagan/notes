@@ -15,7 +15,7 @@ $ wget https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-6.7.1.zi
 ```
 unzip sonarqube-6.7.1.zip
 ```
-* Export SONAR_HOME
+* Export SONAR_HOME variable
 
 ```
 $ export SONAR_HOME=/home/centos/sonarqube-6.7.1 # export as per the directory used in your case
