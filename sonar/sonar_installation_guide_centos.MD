@@ -1,8 +1,10 @@
 # Sonar installation in linux
 
+This installation guide walks through installation of sonarqube-6.7.1 in AWS EC2 centos AMI machine.
+
 * Download the package 
 
-https://www.sonarqube.org/downloads/
+  https://www.sonarqube.org/downloads/
 
 ```
 $ wget https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-6.7.1.zip
@@ -12,6 +14,11 @@ $ wget https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-6.7.1.zi
 
 ```
 unzip sonarqube-6.7.1.zip
+```
+* Export SONAR_HOME
+
+```
+$ export SONAR_HOME=/home/centos/sonarqube-6.7.1 # export as per the directory used in your case
 ```
 
 * Start the sonar process with embedded H2 DB(only for evalaution purpose)
@@ -32,11 +39,14 @@ $ $SONAR_HOME/conf/sonar.properties
 $ vi $SONAR_HOME/conf/sonar.properties
 ```
 
-set below properties
-
-sonar.jdbc.username=<USERNAME>
-sonar.jdbc.password=<PASSWORD>
-sonar.jdbc.url=<JDBCURL>
+  configure below properties
+ 
+  <table>
+  <th>Property</th>
+  <td>sonar.jdbc.username=<USERNAME></td>
+  <td>sonar.jdbc.password=<PASSWORD></td>
+    <td>sonar.jdbc.url=<JDBCURL></td>
+        </table>
 
 * Restart the process on any modification to the below process
 
