@@ -13,7 +13,7 @@ $ wget https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-6.7.1.zi
 * Unzip the package
 
 ```
-unzip sonarqube-6.7.1.zip
+$ unzip sonarqube-6.7.1.zip
 ```
 * Export SONAR_HOME variable
 
@@ -53,3 +53,11 @@ $ vi $SONAR_HOME/conf/sonar.properties
 ```
 $ $SONAR_HOME/bin/linux-x86-64/sonar.sh restart
 ```
+
+* Locate http://<<IP-ADDR>>:9000 to view sonar homepage
+  Login as admin/admin
+  
+  
+ #### Reference links
+ 
+ <b>[SonarQube](https://docs.sonarqube.org/display)</b>
