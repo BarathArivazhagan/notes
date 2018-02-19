@@ -42,11 +42,11 @@ $ vi $SONAR_HOME/conf/sonar.properties
   configure below properties
  
   <table>
-  <th>Property</th>
-  <td>sonar.jdbc.username=<USERNAME></td>
-  <td>sonar.jdbc.password=<PASSWORD></td>
-    <td>sonar.jdbc.url=<JDBCURL></td>
-        </table>
+  <th>Properties</th>
+  <td>sonar.jdbc.username=USERNAME</td>
+  <td>sonar.jdbc.password=PASSWORD</td>
+  <td>sonar.jdbc.url=JDBCURL</td>
+  </table>
 
 * Restart the process on any modification to the below process
 
