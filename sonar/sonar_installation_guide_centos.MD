@@ -54,9 +54,25 @@ $ vi $SONAR_HOME/conf/sonar.properties
 $ $SONAR_HOME/bin/linux-x86-64/sonar.sh restart
 ```
 
-* Locate http://<<IP-ADDR>>:9000 to view sonar homepage
+* Locate http://IP-ADDR:9000 to view sonar homepage<br>
   Login as admin/admin
-  
+
+#### How to change the ip address and port ? 
+
+* Edit the following properties in sonar.properties
+
+```
+# Binding IP address. For servers with more than one IP address, this property specifies which
+# address will be used for listening on the specified ports.
+# By default, ports will be used on all IP addresses associated with the server.
+sonar.web.host=0.0.0.0
+
+# Web context. When set, it must start with forward slash (for example /sonarqube).
+# The default value is root context (empty value).
+#sonar.web.context=
+# TCP port for incoming HTTP connections. Default value is 9000.
+sonar.web.port=9000
+```
   
  #### Reference links
  
