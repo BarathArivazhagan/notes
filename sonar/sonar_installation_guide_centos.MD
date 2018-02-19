@@ -33,14 +33,11 @@ $ $SONAR_HOME/bin/linux-x86-64/sonar.sh start
 $ $SONAR_HOME/conf/sonar.properties
 ```
 
-* To connect to external DB, modify the configuration details
+* To connect to external DB, modify the configuration details in sonar.properties
 
 ```
 $ vi $SONAR_HOME/conf/sonar.properties
 ```
-
-  configure below properties
- 
   <table>
   <th>Properties</th>
   <tr><td>sonar.jdbc.username=USERNAME</td></tr>
@@ -48,14 +45,15 @@ $ vi $SONAR_HOME/conf/sonar.properties
    <tr><td>sonar.jdbc.url=JDBCURL</td></tr>
   </table>
 
-* Restart the process on any modification to the below process
+
+* Restart the process on any modification to the properties
 
 ```
 $ $SONAR_HOME/bin/linux-x86-64/sonar.sh restart
 ```
 
 * Locate http://IP-ADDR:9000 to view sonar homepage<br>
-  Login as admin/admin
+  Login as <b>admin/admin</b>
 
 #### How to change the ip address and port ? 
 
