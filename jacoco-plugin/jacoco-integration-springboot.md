@@ -1,7 +1,7 @@
 # To integrate jacoco plugin into spring boot application
 
+
 ```
-<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
