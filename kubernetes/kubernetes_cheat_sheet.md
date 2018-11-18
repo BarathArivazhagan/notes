@@ -25,8 +25,15 @@ Service:
 | <b>kubectl get services</b>       |  To get kubernetes services       |
 | <b>kubectl get svc</b>            | To get kubernetes services(short form)|
 
-Pod:
+### Pod:
 
 | command                           | description                       |
 | --------------------------------- | --------------------------------- |
 | <b>kubectl get pods</b>           |  To get kubernetes pods           |
+
+
+### Shell into container
+
+$ kubectl exec -i -t POD_ID --namespace=default  -- /bin/bash
+
+$ kubectl exec -i -t POD_ID --namespace=default  -- /bin/bash
