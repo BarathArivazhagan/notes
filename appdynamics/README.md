@@ -6,3 +6,5 @@ https://docs.appdynamics.com/display/PRO45/EUM+Server+Deployment
 https://docs.appdynamics.com/display/PRO45/SPA2+Monitoring
 
 https://docs.appdynamics.com/display/PRO44/Set+Up+and+Access+Browser+RUM
+  window['adrum-start-time'] = new Date().getTime();
+    window["adrum-app-key"] = 'AD-AAB-AAM-XRY';
