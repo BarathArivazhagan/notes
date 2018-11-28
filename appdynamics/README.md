@@ -22,3 +22,9 @@ https://docs.appdynamics.com/display/PRO44/Set+Up+and+Access+Browser+RUM
 
 
 ```
+
+![image1](img1.png)
+
+![image1](img2.png)
+
+![image1](img3.png)
