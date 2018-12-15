@@ -1,9 +1,9 @@
-# How to get oauth token to login ?
+# How to get oauth token with cf login ?
 
 * Get OAUTH token using below curl command 
 
 ```
-curl -v -XPOST -H"Application/json" -u "cf:" --data "username=<username>&password=<password>&client_id=cf&grant_type=password&response_type=token" https://login.run.pivotal.io/oauth/token
+curl -v -X POST -H"Application/json" -u "cf:" --data "username=<username>&password=<password>&client_id=cf&grant_type=password&response_type=token" https://login.run.pivotal.io/oauth/token
 
 ```
 
@@ -11,5 +11,4 @@ curl -v -XPOST -H"Application/json" -u "cf:" --data "username=<username>&passwor
 
 ```
 > cf oauth-token
-
-``
+```
