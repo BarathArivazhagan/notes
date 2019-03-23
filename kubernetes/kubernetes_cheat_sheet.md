@@ -3,21 +3,21 @@
 
 ### Kubectl:
 
-Node:
+#### Node:
 
 | command                    | description                       |
 | -------------------------- | --------------------------------- |
 | <b>kubectl get nodes</b>   | To get the kubernetes nodes       |
 
 
-Deployment:
+#### Deployment:
 
 | command                           | description                       |
 | --------------------------------- | --------------------------------- |
 | <b>kubectl get deployment</b>     | To get the kubernetes deployments |
 
 
-Service:
+#### Service:
 
 
 | command                           | description                       |
@@ -25,7 +25,7 @@ Service:
 | <b>kubectl get services</b>       |  To get kubernetes services       |
 | <b>kubectl get svc</b>            | To get kubernetes services(short form)|
 
-### Pod:
+#### Pod:
 
 | command                           | description                       |
 | --------------------------------- | --------------------------------- |
@@ -34,6 +34,8 @@ Service:
 
 ### Shell into container
 
-$ kubectl exec -i -t POD_ID --namespace=default  -- /bin/bash
+```
+$ kubectl exec -it pod_id --namespace=default  -- /bin/bash
 
-$ kubectl exec -i -t POD_ID --namespace=default  -- /bin/bash
+$ kubectl exec -it pod_id --namespace=default  -- /bin/bash
+```
