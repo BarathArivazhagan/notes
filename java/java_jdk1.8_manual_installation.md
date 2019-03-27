@@ -1,6 +1,6 @@
-# JDK1.8 installation
+### jdk1.8 installation
 
-## Steps :
+#### steps :
 
 - Make a directory where you want to install Java. For global access (for all users) install it preferably in the directory /opt/java.
 mkdir /opt/java && cd /opt/java
