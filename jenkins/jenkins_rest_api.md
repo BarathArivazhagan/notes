@@ -3,7 +3,10 @@ First, create a job using the UI. This job can be used to create a base config t
 
 To retrieve the job config.xml that you made via the UI, to use for creating new jobs:
 
+```
 curl -X GET http://example.com/job/test/config.xml -u username:API_TOKEN -o mylocalconfig.xml
+```
+
 Obviously, replace:
 
 username:API_TOKEN with your username and password/API_Token
@@ -13,7 +16,10 @@ You can now modify this config file locally to suit for needs as required.
 
 Once ready, to use this config to create a new job:
 
+```
 curl -s -XPOST 'http://example.com/createItem?name=yourJobName' -u username:API_TOKEN --data-binary @mylocalconfig.xml -H "Content-Type:text/xml"
+```
+
 Obviously, replace:
 
 username:API_TOKEN with your username:password
@@ -23,9 +29,11 @@ If the output message is an error message like
 
 Error 403 No valid crumb was included in the request
 means that the CSRF Protection is enabled in the Jenkins instance, thus the curl command requires the crumb field. In that case, try this:
-
+```
 CRUMB=$(curl -s 'http://example.com/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)' -u username:API_TOKEN)
 curl -s -XPOST 'http://example.com/createItem?name=yourJobName' -u username:API_TOKEN --data-binary @mylocalconfig.xml -H "$CRUMB" -H "Content-Type:text/xml"
+```
+
 See Remote Access API for more.
 
 
