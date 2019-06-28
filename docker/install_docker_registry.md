@@ -160,6 +160,51 @@ $ curl https://localhost:443/v2/_catalog --insecure
 $ curl https://localhost:443/v2/nginx/tags/list --insecure
 ```
 
+## Basic Authentication with private registry
+
+- Generate basic credentials
+
+```sh
+$ mkdir auth
+$ docker run \
+  --entrypoint htpasswd \
+  registry:2 -Bbn testuser testpassword > auth/htpasswd
+```
+
+- Mount auth as volume mount
+
+```sh
+ docker run -d \
+  --restart=always \
+  --name registry \
+  -v "$(pwd)"/certs:/certs \
+  -v "$(pwd)"/auth:/auth \
+  -e REGISTRY_HTTP_ADDR=0.0.0.0:443 \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key \
+  -e REGISTRY_STORAGE=s3 \
+  -e REGISTRY_STORAGE_S3_REGION=us-east-1 \
+  -e REGISTRY_STORAGE_S3_BUCKET=barath-docker-registry \ 
+  -e "REGISTRY_AUTH=htpasswd" \
+  -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
+  -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
+  -p 443:443 \
+  registry:2
+```
+
+- Validate login
+
+```sh
+$ docker login localhost:443
+$ docker login localhost:443
+Username: testuser
+Password: 
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+```
 
 #### Testing an insecure registry
 
