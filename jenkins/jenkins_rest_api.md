@@ -3,7 +3,7 @@ First, create a job using the UI. This job can be used to create a base config t
 
 To retrieve the job config.xml that you made via the UI, to use for creating new jobs:
 
-```
+```sh
 curl -X GET http://example.com/job/test/config.xml -u username:API_TOKEN -o mylocalconfig.xml
 ```
 
@@ -16,7 +16,7 @@ You can now modify this config file locally to suit for needs as required.
 
 Once ready, to use this config to create a new job:
 
-```
+```sh
 curl -s -XPOST 'http://example.com/createItem?name=yourJobName' -u username:API_TOKEN --data-binary @mylocalconfig.xml -H "Content-Type:text/xml"
 ```
 
@@ -37,4 +37,4 @@ curl -s -XPOST 'http://example.com/createItem?name=yourJobName' -u username:API_
 See Remote Access API for more.
 
 
-Ref: https://support.cloudbees.com/hc/en-us/articles/220857567-How-to-create-a-job-using-the-REST-API-and-cURL-
+Ref: [How-to-create-a-job-using-the-REST-API](https://support.cloudbees.com/hc/en-us/articles/220857567-How-to-create-a-job-using-the-REST-API-and-cURL)
