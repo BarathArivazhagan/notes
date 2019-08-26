@@ -11,10 +11,20 @@ nohup ./bin/control-center-start /tmp/control-center.properties >/dev/null 2>&1 
 ```
 
 
-### Setting up NIFI as docker container
+### Setting up Nifi as docker container
 
 ```
 yum install -y docker
 systemctl start docker
 docker run --name nifi -p 8080:8080 -d apache/nifi:latest
+```
+
+### Setting up Kafka GUI using yahoo manager
+
+```
+wget https://barath-kafka-manager.s3.amazonaws.com/kafka-manager-2.0.0.2.zip
+unzip kafka-manager-2.0.0.2.zip
+vi kafka-manager-2.0.0.2/conf/application.conf
+## set kafka-manager.zkhosts="localhost:2181" in application.conf
+./bin/kafka-manager
 ```
