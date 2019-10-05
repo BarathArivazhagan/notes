@@ -1,0 +1,25 @@
+## Setting up Jenkins with Docker
+
+```
+# Install Java
+
+sudo yum install -y java-1.8.0-openjdk-devel git docker
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
+
+# Install jenkins
+
+sudo yum install jenkins -y
+\
+
+# Add jenkins user to docker group
+
+sudo groupadd docker
+sudo usermod -a -G docker ec2-user
+sudo usermod -a -G docker jenkins
+
+# Start Jenkins
+
+sudo systemctl start docker
+```
