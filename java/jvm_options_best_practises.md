@@ -1,0 +1,10 @@
+-XX:+PrintGCTimeStamps
+-XX:+PrintGCDetails
+-Xloggc:/opt/app/gc.log
+-XX:+UseGCLogFileRotation
+-XX:NumberOfGCLogFiles=10
+-XX:GCLogFileSize=50M
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath=./java_pid<pid>.hprof
+-XX:+UseStringDeduplication
+-XX:+HeapDumpOnOutOfMemoryError="shutdown -r"
