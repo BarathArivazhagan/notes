@@ -2,6 +2,20 @@
 
 Follow below instructions to setup terraform in linux machine(AWS EC2 instance)?
 
+#### Terraform 
+
+```
+Install yum-config-manager to manage your repositories.
+
+$ sudo yum install -y yum-utils
+
+$ sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+Copy
+Install.
+
+$ sudo yum -y install terraform
+```
+
 #### Terraform - 0.11.3
 
 ```
